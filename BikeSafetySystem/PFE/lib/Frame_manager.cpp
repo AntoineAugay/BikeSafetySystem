@@ -5,11 +5,10 @@
 #include "Frame_manager.h"
 
 Frame_manager::Frame_manager(){
-    messages = String_queue();
 }
 
 
-void Frame_manager::parse( char* frame, int size ){
+void Frame_manager::parse( char* frame, int size, String_queue& messages ){
 
     int cursor = 0;
     while ( cursor < size ){
@@ -46,9 +45,4 @@ unsigned char* Frame_manager::builder( String command ) {
 	}
 
 	return cmd;
-}
-
-
-String Frame_manager::pop_message(){
-	return messages.pop();
 }
