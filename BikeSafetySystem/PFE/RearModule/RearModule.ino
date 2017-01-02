@@ -5,6 +5,7 @@
 #include "Adafruit_BLE_UART.h"
 #include "Frame_manager.h"
 #include "Turn_signal.h"
+#include "String_queue.h"
 
 // Connect CLK/MISO/MOSI to hardware SPI
 // e.g. On FIO : CLK = 13, MISO = 12, MOSI = 11
@@ -20,6 +21,7 @@ Adafruit_BLE_UART BTLEserial = Adafruit_BLE_UART( ADAFRUITBLE_REQ, ADAFRUITBLE_R
 Frame_manager frame_manager = Frame_manager();
 GPIO_manager gpio = GPIO_manager();
 Turn_signal turn_signal = Turn_signal( LEFT_TURN_SIGNAL,  RIGHT_TURN_SIGNAL, gpio );
+String_queue messages = String_queue();
 
 
 Timer t;
