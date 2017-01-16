@@ -144,11 +144,11 @@ void loop()
             }
             Serial.println( "" );
 
-            frame_manager.parse( message, size );
+            frame_manager.parse( message, size, messages);
         }
     }
 
-    command = frame_manager.pop_message();
+    command = messages.pop();
     
     if( command != "" ){
          Serial.println( "Command : " + command );

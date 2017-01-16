@@ -21,10 +21,6 @@
    *
    */
 class Frame_manager {
-private:
-
-   String_queue messages; /*!< queue of message extract from frames received*/
-
 public:
 
 
@@ -43,9 +39,11 @@ public:
      *  Extract information in frame and put all message in the queue messages
      *
      *  \param frame, frame structure : header(1 octet) and data (n octets)
-     *  \return nothing
+	 *  \param size, size of frame 
+     *  \param messages, queue to fill with the commands in the frame
+	 *	\return nothing
      */
-    void parse(char* frame, int size);
+    void parse(char* frame, int size, String_queue& messages);
 
 	/*!
 	*  \brief build a frame form the command
@@ -54,16 +52,6 @@ public:
 	*  \return nothing
 	*/
 	unsigned char* builder(String command);
-
-    /*!
-     *  \brief get the oldest message received
-     *
-     *
-     *  \param nothing
-     *  \return return a empty string if the queue is empty
-     *          if not the last message added in the list
-     */
-    String pop_message();
 
 };
 

@@ -9,8 +9,8 @@
 #define ADAFRUITBLE_REQ 10
 #define ADAFRUITBLE_RDY 2     // This should be an interrupt pin, on Uno thats #2 or #3
 #define ADAFRUITBLE_RST 9
-#define LEFT_BUTTON	3
-#define RIGHT_BUTTON 4
+#define LEFT_BUTTON	5
+#define RIGHT_BUTTON 6
 
 /* Definition of sketch variables */
 Adafruit_BLE_UART BTLEserial = Adafruit_BLE_UART(ADAFRUITBLE_REQ, ADAFRUITBLE_RDY, ADAFRUITBLE_RST);
@@ -27,7 +27,9 @@ bool right_btn_state;
 bool last_right_btn_state = LOW;
 unsigned long last_debounce_time_right = 0;
 
-unsigned long debounce_delay = 50;
+unsigned long debounce_delay = 100;
+
+bool test = false;
 
 void setup(void)
 { 
@@ -71,24 +73,25 @@ void loop()
 	if (status == ACI_EVT_CONNECTED) {
 			
 		String str = messages.pop();
-			
+		
 		if (str != "") {
+
+			Serial.print(F("\n* Msg to send -> \""));
+			Serial.print(str);
+			Serial.println("\"");
 
 			// We need to convert the line to bytes, no more than 20 at this time
 			unsigned char* sendbuffer = frame_manager.builder(str);
-				
-			int size;
-			while ( sendbuffer[size++] != '\n' && size<22 ) {
-			}
+			char size = sizeof(sendbuffer);
 
-			if (size >= 22) {
+			if (size > 1) {
 
 				Serial.print(F("\n* Sending -> \""));
 				Serial.print((char *)sendbuffer);
 				Serial.println("\"");
 
 				// write the data
-				BTLEserial.write((uint8_t*)sendbuffer, size);
+				BTLEserial.write((uint8_t*)sendbuffer, size-1);
 			}
 		}
 	}
@@ -108,7 +111,7 @@ void loop()
 			left_btn_state = left_value;
 
 			// only toggle the LED if the new button state is HIGH
-			if (left_btn_state == HIGH) {
+			if (left_btn_state == LOW) {
 				messages.push("L");
 			}
 		}
@@ -119,7 +122,7 @@ void loop()
 
 	/* Check right button */
 
-	int right_value = gpio.read_pin(LEFT_BUTTON);
+	int right_value = gpio.read_pin(RIGHT_BUTTON);
 
 	if (right_value != last_right_btn_state) {
 		last_debounce_time_right = millis();
@@ -130,7 +133,7 @@ void loop()
 			
 			right_btn_state = right_value;
 
-			if (right_btn_state == HIGH) {
+			if (right_btn_state == LOW) {
 				messages.push("R");
 			}
 		}
