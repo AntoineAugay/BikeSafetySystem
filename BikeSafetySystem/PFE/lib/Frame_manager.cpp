@@ -31,16 +31,15 @@ void Frame_manager::parse( char* frame, int size, String_queue& messages ){
 
 unsigned char* Frame_manager::builder( String command ) {
 
-	unsigned char cmd[20];
+	unsigned char* cmd;
+	cmd = (unsigned char*)malloc(20 * sizeof(unsigned char));
 
 	switch ( command.charAt(0) ) {
 		case 'L' :
 			cmd[0] = 0x01;
-			cmd[1] = '\n';
 			break;
 		case 'R':
 			cmd[0] = 0x02;
-			cmd[1] = '\n';
 			break;
 	}
 
