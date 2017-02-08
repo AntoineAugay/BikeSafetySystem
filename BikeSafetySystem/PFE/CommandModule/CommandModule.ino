@@ -34,7 +34,7 @@ bool test = false;
 void setup(void)
 { 
   Serial.begin(9600);
-  while(!Serial); // Leonardo/Micro should wait for serial init
+  //while(!Serial); // Leonardo/Micro should wait for serial init
   Serial.println(F("Adafruit Bluefruit Low Energy nRF8001 Print echo demo"));
 
   /* Initialisation of button pin */
